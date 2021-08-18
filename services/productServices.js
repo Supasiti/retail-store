@@ -24,6 +24,8 @@ const getOne = async (productId) => {
 
 // create a product tag pairing with new product and new tags ids
 const createProductTags = async (product, newTagIds) => {
+  
+
   if (product.id && newTagIds.length) {
     const productTagIdArr = newTagIds.map((tag_id) => {
       return {
@@ -36,17 +38,16 @@ const createProductTags = async (product, newTagIds) => {
   }
 }
 
-
 // create new product
 // return 
 //  - either Product or ProductTags
 const create = async (newProduct) => {
   const product = await models.Product.create(newProduct);
-  if (!newProduct.tagIds.length) {
-    return product;
-  } else {
+  if ( 'tagIds' in newProduct && newProduct.tagIds.length) {
     const newProductTags = await createProductTags(product, newProduct.tagIds);
     return newProductTags;
+  } else {
+    return product;
   }
 }
 

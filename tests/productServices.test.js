@@ -92,5 +92,25 @@ describe('/services/productServices', () => {
       expect(createdProduct.product_name).toEqual(input.product_name);
       expect(rowsRemoved).toEqual(expectedRowsRemoved);
     })
+
+    it('should return a new Product when passed with no tag ids', async () => {
+
+      const input = {
+        product_name: "Basketball",
+        price: 200.00,
+        stock: 3,
+      }
+      const expectedRowsRemoved = 1;
+      
+      const createdData = await product.create(input);
+      const createdId = ( createdData instanceof Array )? createdData[0].productId : createdData.id;
+      const createdProduct = await product.getOne(createdId);
+
+      console.log(createdId);
+      const rowsRemoved = await product.remove(createdId);
+      
+      expect(createdProduct.product_name).toEqual(input.product_name);
+      expect(rowsRemoved).toEqual(expectedRowsRemoved);
+    })
   })
 })

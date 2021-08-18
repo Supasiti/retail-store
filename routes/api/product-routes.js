@@ -7,14 +7,24 @@ const sanitize = require('../../services/sanitize')
 
 // get all products
 router.get('/', (req, res) => {
-  // find all products
-  // be sure to include its associated Category and Tag data
+  try {
+    const productsData = await product.getAll();
+    const sanitized = sanitize(productsData);
+    res.status(200).json(sanitized);
+  } catch (err) {
+    res.status(400).json(err);
+  }
 });
 
 // get one product
 router.get('/:id', (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
+  try {
+    const productData = await product.getOne(req.params.id);
+    const sanitized = sanitize(productData);
+    res.status(200).json(sanitized);
+  } catch (err) {
+    res.status(400).json(err);
+  }
 });
 
 // create new product
