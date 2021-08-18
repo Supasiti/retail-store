@@ -19,31 +19,31 @@ const getOne = async (categoryId) => {
   return categories.length === 0? null : categories[0];
 }
 
-
 // create new product
 // return 
 //  - either Product or ProductTags
-const create = async (newProduct) => {
-  
+const create = async (newCategory) => {
+  const category = await models.Category.create(newCategory);
+  return category;
 }
 
-//----------------------------------------------------------------------------------------
-// update product
-
-
-// update the product 
-const update = async (newProduct, productId) => {
-
-  
-  
+// return 
+//  - number
+const remove = async (categoryId) => {
+  const rowsRemoved = await models.Category.destroy({
+    where : { id : categoryId }
+  });
+  return rowsRemoved;
 }
 
-
-//----------------------------------------------------------------------------------------
-// delete product
-
-const remove = async (productId) => {
-
+// update a category 
+// return 
+//  - Category
+const update = async (newCategory, categoryId) => {
+  const category = await models.Category.update(newCategory, {
+    where: { id: categoryId }
+  })
+  return category;
 }
 
 module.exports = {

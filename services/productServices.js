@@ -24,7 +24,6 @@ const getOne = async (productId) => {
 // create a product tag pairing with new product and new tags ids
 const createProductTags = async (product, newTagIds) => {
   
-
   if (product.id && newTagIds.length) {
     const productTagIdArr = newTagIds.map((tag_id) => {
       return {
