@@ -1,17 +1,19 @@
+const { Model, DataTypes } = require('sequelize');
 const models = require('../models');
+const sanitize = require('./sanitize');
 
 // get all products
+// return Array<Object>
 const getAll = async () => {
   const productsData = await models.Product.findAll({
     include: [ models.Category, models.Tag ]
   });
-  const sanitizedProductsData = productsData.map(product => {
-    return product.get({ plain : true });
-  })
+  const sanitizedProductsData = sanitize(productsData);
   return sanitizedProductsData;
 }
 
 // get one product
+// return Object
 const getOne = async (productId) => {
 
 }

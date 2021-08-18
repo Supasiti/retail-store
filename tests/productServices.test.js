@@ -29,13 +29,12 @@ describe('/services/productServices', () => {
         return 'tags' in product // check if 'tags' is a property of product
       }).every(includeTags => includeTags);
 
-      console.log(includeTagsProperty);
-      
       expect(resultNames)
         .toEqual(expect.arrayContaining(expectedProductNames));
       expect(resultCategories)
         .toEqual(expect.arrayContaining(expectedCategories));
       expect(productsData.length).toEqual(expectedLength);
+      expect(includeTagsProperty).toEqual(true);
     })
   })
 
