@@ -4,6 +4,17 @@ const sanitize = require('../../services/sanitize')
 
 // The `/api/categories` endpoint
 
+const handleRequest = async (promise, res) => {
+  try {
+    const data = await promise;
+    const sanitized = sanitize(data);
+    res.status(200).json(sanitized);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+}
+
+
 // find all categories
 router.get('/', (req, res) => {
   try {
@@ -11,25 +22,28 @@ router.get('/', (req, res) => {
     const sanitized = sanitize(categoriesData);
     res.status(200).json(sanitized);
   } catch (err) {
-    res.status(400).json(err);
+    res.status(500).json(err);
   }
 });
 
+// find one category by its `id` value
 router.get('/:id', (req, res) => {
-  // find one category by its `id` value
-  // be sure to include its associated Products
+  handleRequest(category.getOne(req.params.id), res)
 });
 
+// create a category
 router.post('/', (req, res) => {
-  // create a new category
+  handleRequest(category.create(req.body), res)
 });
 
+// update a category by its `id` value
 router.put('/:id', (req, res) => {
-  // update a category by its `id` value
+  handleRequest(category.update(req.body, req.params.id), res)
 });
 
+// delete a category by its `id` value
 router.delete('/:id', (req, res) => {
-  // delete a category by its `id` value
+  handleRequest(category.remove(req.params.id), res)
 });
 
 module.exports = router;
