@@ -2,7 +2,7 @@ const models = require('../models');
 const sanitize = require('./sanitize');
 
 // get all products
-// return Array<Object>
+// return Array<Product>
 const getAll = async () => {
   const productsData = await models.Product.findAll({
     include: [ models.Category, models.Tag ]
@@ -11,7 +11,7 @@ const getAll = async () => {
 }
 
 // get one product
-// return Object
+// return Product
 const getOne = async (productId) => {
   const products = await models.Product.findAll({
     where : { id : productId },

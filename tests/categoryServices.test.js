@@ -31,34 +31,32 @@ describe('/services/categoryServices', () => {
     })
   })
 
-  // get one product
-  // describe('getOne', () => {
+  // get one category
+  describe('getOne', () => {
     
-  //   // when correct id is passed
-  //   it ('should return a product with category and tags if correct id is passed', async () => {
-  //     const input = 1;
-  //     const expectedId = 1
-  //     const expectedClass = models.Product;
+    // when correct id is passed
+    it ('should return a category with associated products if correct id is passed', async () => {
+      const input = 1;
+      const expectedId = 1
+      const expectedClass = models.Category;
 
-  //     const result = await product.getOne(input);
-  //     const includeCategory = 'category' in result;
-  //     const includeTags = 'tags' in result;
+      const result = await category.getOne(input);
+      const includeProducts = 'products' in result;
 
-  //     expect(result).toBeInstanceOf(expectedClass);
-  //     expect(result.id).toEqual(expectedId);
-  //     expect(includeCategory).toBe(true);
-  //     expect(includeTags).toBe(true);
-  //   })
+      expect(result).toBeInstanceOf(expectedClass);
+      expect(result.id).toEqual(expectedId);
+      expect(includeProducts).toBe(true);
+    })
 
-  //   // when id is not found
-  //   it ('should return null if correct id is passed', async () => {
-  //     const input = 1000;
-  //     const expected = null
+    // when id is not found
+    it ('should return null if correct id is passed', async () => {
+      const input = 1000;
+      const expected = null
 
-  //     const result = await product.getOne(input);
+      const result = await category.getOne(input);
 
-  //     expect(result).toBe(expected);
-  //   })
-  // }) 
+      expect(result).toBe(expected);
+    })
+  }) 
 
 })
