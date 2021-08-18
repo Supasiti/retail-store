@@ -106,7 +106,6 @@ describe('/services/productServices', () => {
       const createdId = ( createdData instanceof Array )? createdData[0].productId : createdData.id;
       const createdProduct = await product.getOne(createdId);
 
-      console.log(createdId);
       const rowsRemoved = await product.remove(createdId);
       
       expect(createdProduct.product_name).toEqual(input.product_name);

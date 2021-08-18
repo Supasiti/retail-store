@@ -1,4 +1,3 @@
-const { Model, DataTypes } = require('sequelize');
 const models = require('../models');
 const sanitize = require('./sanitize');
 
