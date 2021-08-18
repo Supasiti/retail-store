@@ -1,5 +1,6 @@
 const product = require('../services/productServices') 
 const models = require('../models')
+const sanitize = require('../services/sanitize')
 
 describe('/services/productServices', () => {
 
@@ -7,7 +8,6 @@ describe('/services/productServices', () => {
   describe('getAll', () => {
     it('should return all the products in database, including categories and tags', async () => {
 
-      const expectedLength = 5;
       const expectedProductNames = [
         'Plain T-Shirt',
         'Running Sneakers',
@@ -15,30 +15,27 @@ describe('/services/productServices', () => {
         'Top 40 Music Compilation Vinyl Record',
         'Cargo Shorts',
       ];
-      const expectedCategories = [
-        'Shirts',
-        'Shoes',
-        'Hats',
-        'Music',
-        'Shorts'
-      ];
 
       const productsData = await product.getAll();
       const resultNames = productsData.map(product => product.product_name);
-      const resultCategories = productsData.map(product => product.category.category_name);
+      const includeCategoryProperty = productsData
+      .map(product => {
+        // check if 'category' is a property of product
+        return 'category' in product 
+      }
+      ).some(includeCategory => includeCategory);
+
       const includeTagsProperty = productsData
         .map(product => {
           // check if 'tags' is a property of product
           return 'tags' in product 
         }
-        ).every(includeTags => includeTags);
+        ).some(includeTags => includeTags);
 
       expect(resultNames)
         .toEqual(expect.arrayContaining(expectedProductNames));
-      expect(resultCategories)
-        .toEqual(expect.arrayContaining(expectedCategories));
-      expect(productsData.length).toEqual(expectedLength);
       expect(includeTagsProperty).toEqual(true);
+      expect(includeCategoryProperty).toEqual(true);
     })
   })
 
@@ -62,14 +59,38 @@ describe('/services/productServices', () => {
       expect(includeTags).toBe(true);
     })
 
-      // when id is not found
-      it ('should return null  if correct id is passed', async () => {
-        const input = 1000;
-        const expected = null
-  
-        const result = await product.getOne(input);
-  
-        expect(result).toBe(expected);
-      })
+    // when id is not found
+    it ('should return null if correct id is passed', async () => {
+      const input = 1000;
+      const expected = null
+
+      const result = await product.getOne(input);
+
+      expect(result).toBe(expected);
+    })
   }) 
+
+
+  // create and destroy
+  describe('create and destroy', () => {
+    it('should return an array of new ProductTags when passed with tag ids', async () => {
+
+      const input = {
+        product_name: "Basketball",
+        price: 200.00,
+        stock: 3,
+        tagIds: [1, 2, 3, 4]
+      }
+      const expectedRowsRemoved = 1;
+      
+      const createdData = await product.create(input);
+      const createdId = ( createdData instanceof Array )? createdData[0].productId : createdData.id;
+      const createdProduct = await product.getOne(createdId);
+
+      const rowsRemoved = await product.remove(createdId);
+      
+      expect(createdProduct.product_name).toEqual(input.product_name);
+      expect(rowsRemoved).toEqual(expectedRowsRemoved);
+    })
+  })
 })
