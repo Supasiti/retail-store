@@ -1,6 +1,5 @@
 const product = require('../services/productServices') 
 const models = require('../models')
-const sanitize = require('../services/sanitize')
 
 describe('/services/productServices', () => {
 
@@ -105,7 +104,6 @@ describe('/services/productServices', () => {
       const createdData = await product.create(input);
       const createdId = ( createdData instanceof Array )? createdData[0].productId : createdData.id;
       const createdProduct = await product.getOne(createdId);
-
       const rowsRemoved = await product.remove(createdId);
       
       expect(createdProduct.product_name).toEqual(input.product_name);

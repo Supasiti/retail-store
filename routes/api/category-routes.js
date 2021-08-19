@@ -14,7 +14,6 @@ const handleRequest = async (promise, res) => {
   }
 }
 
-
 // find all categories
 router.get('/', (req, res) => {
   try {
@@ -34,7 +33,7 @@ router.get('/:id', (req, res) => {
 // create a category
 router.post('/', (req, res) => {
   handleRequest(category.create(req.body), res)
-});
+})
 
 // update a category by its `id` value
 router.put('/:id', (req, res) => {

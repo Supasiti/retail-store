@@ -1,6 +1,5 @@
 const category = require('../services/categoryServices') 
 const models = require('../models')
-const sanitize = require('../services/sanitize')
 
 describe('/services/categoryServices', () => {
 

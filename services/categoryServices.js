@@ -19,9 +19,9 @@ const getOne = async (categoryId) => {
   return categories.length === 0? null : categories[0];
 }
 
-// create new product
+// create new category
 // return 
-//  - either Product or ProductTags
+//  - Category
 const create = async (newCategory) => {
   const category = await models.Category.create(newCategory);
   return category;
