@@ -57,7 +57,7 @@ describe('/services/tagServices', () => {
 
   // create and destroy category
   describe('create and destroy', () => { 
-    it('should return a new category', async () => {
+    it('should return a new tag', async () => {
 
       const input = { tag_name: "purple" }
       const expectedRowsRemoved = 1;
@@ -74,19 +74,16 @@ describe('/services/tagServices', () => {
 
   // update category
   describe('update', () => { 
-    it('should return a new category', async () => {
+    it('should return a new tag', async () => {
 
       const firstInput  = { tag_name: "purple" }
       const secondInput = { tag_name: "maroon" }
-      const expectedAffectedRows = 1;
 
       const createdData = await tag.create(firstInput);
-      const affectedRows = await tag.update(secondInput, createdData.id);
-      const updatedData = await tag.getOne(createdData.id);
+      const updatedData = await tag.update(secondInput, createdData.id);
       const rowsRemoved = await tag.remove(createdData.id);
       
       expect(updatedData.tag_name).toEqual(secondInput.tag_name);
-      expect(affectedRows[0]).toEqual(expectedAffectedRows);
     })
   })
 })

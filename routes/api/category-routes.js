@@ -15,7 +15,7 @@ const handleRequest = async (promise, res) => {
 }
 
 // find all categories
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const categoriesData = await category.getAll();
     const sanitized = sanitize(categoriesData);
@@ -26,23 +26,28 @@ router.get('/', (req, res) => {
 });
 
 // find one category by its `id` value
-router.get('/:id', (req, res) => {
-  handleRequest(category.getOne(req.params.id), res)
+router.get('/:id', async (req, res) => {
+  await handleRequest(category.getOne(req.params.id), res)
 });
 
 // create a category
-router.post('/', (req, res) => {
-  handleRequest(category.create(req.body), res)
+router.post('/', async (req, res) => {
+  await handleRequest(category.create(req.body), res)
 })
 
 // update a category by its `id` value
-router.put('/:id', (req, res) => {
-  handleRequest(category.update(req.body, req.params.id), res)
+router.put('/:id', async (req, res) => {
+  await handleRequest(category.update(req.body, req.params.id), res)
 });
 
 // delete a category by its `id` value
-router.delete('/:id', (req, res) => {
-  handleRequest(category.remove(req.params.id), res)
+router.delete('/:id', async (req, res) => {
+  try {
+    const rowsRemoved = await category.remove(req.params.id);
+    res.status(200).json({ message : `${rowsRemoved} entries has been removed` });
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;

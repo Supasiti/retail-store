@@ -85,15 +85,13 @@ const update = async (newProduct, productId) => {
   })
   const currentProductTags = await getAllAssociatedProductTags(productId);
   const currentProductTagIds = currentProductTags.map(({ tag_id }) => tag_id);
-  const newProductTags = getNewProductTags(newProduct, currentProductTagIds, productId);
+  const newProductTagData = getNewProductTags(newProduct, currentProductTagIds, productId);
   const productTagIdsToRemove = getProductTagIdsToRemove(currentProductTags, newProduct.tagIds)
 
-  const updatedProductTags = await Promise.all([
-      ProductTag.destroy({ where: { id: productTagIdsToRemove } }),
-      ProductTag.bulkCreate(newProductTags),
-    ]);
+  const productTagsRemoved = await models.ProductTag.destroy({ where: { id: productTagIdsToRemove } });
+  const newProductTags = await models.ProductTag.bulkCreate(newProductTagData);
 
-  return updatedProductTags;
+  return newProductTags;
 }
 
 

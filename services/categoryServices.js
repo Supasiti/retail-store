@@ -40,9 +40,14 @@ const remove = async (categoryId) => {
 // return 
 //  - Category
 const update = async (newCategory, categoryId) => {
-  const category = await models.Category.update(newCategory, {
+  const categoriesUpdated = await models.Category.update(newCategory, {
     where: { id: categoryId }
   })
+  if (!categoriesUpdated[0]) return null;
+
+  const updatedCategory = await getOne(categoryId);
+  return updatedCategory;
+
   return category;
 }
 

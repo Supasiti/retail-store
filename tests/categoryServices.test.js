@@ -81,15 +81,12 @@ describe('/services/categoryServices', () => {
 
       const firstInput  = { category_name: "Stationary" }
       const secondInput = { category_name: "Kitchen" }
-      const expectedAffectedRows = 1;
 
       const createdData = await category.create(firstInput);
-      const affectedRows = await category.update(secondInput, createdData.id);
-      const updatedData = await category.getOne(createdData.id);
+      const updatedData = await category.update(secondInput, createdData.id);
       const rowsRemoved = await category.remove(createdData.id);
       
       expect(updatedData.category_name).toEqual(secondInput.category_name);
-      expect(affectedRows[0]).toEqual(expectedAffectedRows);
     })
   })
 })

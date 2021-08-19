@@ -70,8 +70,8 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
 
   try {
-    const updatedProductTags = await product.update(req.body, req.params.id);
-    const sanitized = sanitize(updatedProductTags);
+    const newProductTags = await product.update(req.body, req.params.id);
+    const sanitized = sanitize(newProductTags);
     res.status(200).json(sanitized);
   } catch (err) {
     res.status(400).json(err);

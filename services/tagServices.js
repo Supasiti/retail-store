@@ -40,10 +40,13 @@ const remove = async (tagId) => {
 // return 
 //  - Tag
 const update = async (newTag, tagId) => {
-  const tag = await models.Tag.update(newTag, {
+  const tagsUpdated = await models.Tag.update(newTag, {
     where: { id: tagId }
   })
-  return tag;
+  if (!tagsUpdated[0]) return null;
+
+  const updatedTag = await getOne(tagId);
+  return updatedTag;
 }
 
 module.exports = {
