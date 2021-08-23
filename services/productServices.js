@@ -41,12 +41,11 @@ const createProductTags = async (product, newTagIds) => {
 //  - either Product or ProductTags
 const create = async (newProduct) => {
   const product = await models.Product.create(newProduct);
+
   if ( 'tagIds' in newProduct && newProduct.tagIds.length) {
-    const newProductTags = await createProductTags(product, newProduct.tagIds);
-    return newProductTags;
-  } else {
-    return product;
+    await createProductTags(product, newProduct.tagIds);
   }
+  return product;
 }
 
 //----------------------------------------------------------------------------------------
